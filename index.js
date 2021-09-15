@@ -7,6 +7,8 @@
         + If a plane lands, its `isFlying` property is set to false.
 */
 
+const { throwStatement } = require("@babel/types");
+
 // EXAMPLE SOLUTION CODE:
 function Airplane(name) {
   this.name = name;
@@ -39,9 +41,9 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person(obj) {
-  this.name = obj.name,
-  this.age = obj.age,
+function Person(name, age) {
+  this.name = name,
+  this.age = age,
   this.stomach = []
 }
 
@@ -59,7 +61,13 @@ Person.prototype.toString = function (){
   return `${this.name}, ${this.age}`;
 }
 
+// const taskOneObj = {
+//   name: 'Albert',
+//   age: '100',
+// }
 
+// const Al = new Person('Albert', 100);
+// console.log('TASK 1: ', Al);
 
 /*
   TASK 2
@@ -75,9 +83,32 @@ Person.prototype.toString = function (){
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-  
+function Car(model, mpg) {
+  this.model = model,
+  this.milesPerGallon = mpg,
+  this.tank = 0,
+  this.odometer = 0
 }
+
+Car.prototype.fill = function (gallons) {
+  this.tank += gallons;
+  // if (tank > 30) {
+  //   this.tank = 30; // Max 30 gallon tank
+  // }
+}
+
+Car.prototype.drive = function (distance) {
+  // Check how much fuel is needed
+  if ( (distance/this.milesPerGallon) > tank ){
+    this.odometer += distance;
+    this.tank -= distance/this.milesPerGallon;
+  } else {
+    this.odometer += tank * this.milesPerGallon;
+    this.tank = 0;
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  }
+}
+
 
 
 /*
@@ -87,10 +118,16 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
- 
+function Baby(name, age, favToy) {
+  Person.call(this, name, age),
+  this.favoriteToy = favToy
 }
 
+Baby.prototype = Object.create(Person.prototype); // Binding the person prototypes to Baby prototype
+
+Baby.prototype.play = function () {
+  return `Playing with ${this.favoriteToy}`;
+}
 
 /* 
   TASK 4
